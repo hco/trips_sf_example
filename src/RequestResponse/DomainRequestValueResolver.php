@@ -42,8 +42,11 @@ class DomainRequestValueResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument)
     {
-        $trip = $this->serializer->deserialize($request->getContent(), $argument->getType(), 'json');
-        yield $trip;
+        yield $this->serializer->deserialize(
+            $request->getContent(),
+            $argument->getType(),
+            $request->getContentType()
+        );
     }
 
     private function isSupportedRequestArgument(ArgumentMetadata $argument): bool
@@ -53,6 +56,7 @@ class DomainRequestValueResolver implements ArgumentValueResolverInterface
 
     private function isSupportedRequestContentType(Request $request): bool
     {
-        return $request->getContentType() === 'json';
+        $contentType = $request->getContentType();
+        return $contentType === 'json' || $contentType === 'xml';
     }
 }
