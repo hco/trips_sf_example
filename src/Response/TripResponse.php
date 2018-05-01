@@ -6,7 +6,7 @@ namespace App\Response;
 
 use App\Entity\Trip;
 
-class TripResponse
+class TripResponse extends Response
 {
     public $id;
     public $name;

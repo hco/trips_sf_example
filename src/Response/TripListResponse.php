@@ -6,7 +6,7 @@ namespace App\Response;
 
 use App\Entity\Trip;
 
-class TripListResponse
+class TripListResponse extends Response
 {
     /**
      * @var TripResponse[]
