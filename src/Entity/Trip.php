@@ -35,6 +35,21 @@ class Trip
         return $this->end;
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setStart(\DateTimeImmutable $start): void
+    {
+        $this->start = $start;
+    }
+
+    public function setEnd(\DateTimeImmutable $end): void
+    {
+        $this->end = $end;
+    }
+
     /**
      * @ORM\Column(type="string", length=255)
      */
