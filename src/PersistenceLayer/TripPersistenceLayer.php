@@ -36,6 +36,11 @@ class TripPersistenceLayer
         return $this->repository->findAll();
     }
 
+    public function getById(int $id): Trip
+    {
+        return $this->repository->find($id);
+    }
+
     public function persist(Trip $trip): void
     {
         $this->manager->persist($trip);

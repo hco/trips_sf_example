@@ -9,6 +9,7 @@ use App\PersistenceLayer\TripPersistenceLayer;
 use App\Request\AddTripRequest;
 use App\Response\CreatedResponse;
 use App\Response\TripListResponse;
+use App\Response\TripResponse;
 use App\Service\TripExpensesCalculator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -38,6 +39,15 @@ class TripController
     public function listTrips()
     {
         return TripListResponse::createFromTripArray($this->persistenceLayer->getAllTrips());
+    }
+
+    /**
+     * @Route("/trips/{tripId}", methods={"GET"})
+     */
+    public function getTrip($tripId)
+    {
+        $trip = $this->persistenceLayer->getById($tripId);
+        return TripResponse::createFromEntity($trip);
     }
 
     /**
