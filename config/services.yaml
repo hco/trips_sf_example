@@ -28,5 +28,6 @@ services:
             - { name: kernel.event_listener, event: kernel.view }
 
 
+    Metadata\Driver\DriverInterface: '@jms_serializer.metadata_driver'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
