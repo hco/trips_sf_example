@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\Trip;
+use App\PersistenceLayer\TripPersistenceLayer;
 use App\Request\AddTripRequest;
 use App\Response\CreatedResponse;
 use App\Response\TripListResponse;
@@ -13,14 +14,24 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TripController extends Controller
+class TripController
 {
+    /**
+     * @var TripPersistenceLayer
+     */
+    private $persistenceLayer;
+
+    public function __construct(TripPersistenceLayer $persistenceLayer)
+    {
+        $this->persistenceLayer = $persistenceLayer;
+    }
+
     /**
      * @Route("/trips", methods={"GET"})
      */
     public function listTrips()
     {
-        return TripListResponse::createFromTripArray($this->getTripRepository()->findAll());
+        return TripListResponse::createFromTripArray($this->persistenceLayer->getAllTrips());
     }
 
     /**
@@ -28,33 +39,13 @@ class TripController extends Controller
      */
     public function addTrip(AddTripRequest $request)
     {
-        $entityManager = $this->getTripsEntityManager();
-
         $newTrip = new Trip();
         $newTrip->setName($request->name);
         $newTrip->setStart($request->start);
         $newTrip->setEnd($request->end);
 
-        $entityManager->persist($newTrip);
-        $entityManager->flush();
-        
+        $this->persistenceLayer->persist($newTrip);
+
         return new CreatedResponse($newTrip);
     }
-
-    /**
-     * @return ObjectRepository
-     */
-    private function getTripRepository()
-    {
-        return $this->getDoctrine()->getRepository(Trip::class);
-    }
-
-    /**
-     * @return ObjectManager
-     */
-    private function getTripsEntityManager()
-    {
-        return $this->getDoctrine()->getManager();
-    }
-
 }
