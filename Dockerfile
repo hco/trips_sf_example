@@ -6,7 +6,8 @@ RUN docker-php-ext-configure pdo_mysql --with-pdo-mysql=mysqlnd && \
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-configure mysqli --with-mysqli=mysqlnd && \
     docker-php-ext-install mysqli && \
-    pecl install xdebug
+    pecl install xdebug && \
+    docker-php-ext-enable xdebug
 
 
 COPY . /var/www/html/
