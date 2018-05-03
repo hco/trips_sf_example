@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -50,11 +51,20 @@ class Trip
         $this->end = $end;
     }
 
+    public function getExpenses(): int
+    {
+        return $this->expenses;
+    }
+
+    public function setExpenses(int $expenses): void
+    {
+        $this->expenses = $expenses;
+    }
+
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $name;
-
     /**
      * @ORM\Column(type="datetimetz_immutable")
      */
@@ -64,5 +74,10 @@ class Trip
      * @ORM\Column(type="datetimetz_immutable")
      */
     private $end;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $expenses;
 
 }

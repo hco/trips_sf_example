@@ -9,6 +9,7 @@ use App\PersistenceLayer\TripPersistenceLayer;
 use App\Request\AddTripRequest;
 use App\Response\CreatedResponse;
 use App\Response\TripListResponse;
+use App\Service\TripExpensesCalculator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,10 +21,15 @@ class TripController
      * @var TripPersistenceLayer
      */
     private $persistenceLayer;
+    /**
+     * @var TripExpensesCalculator
+     */
+    private $expensesCalculator;
 
-    public function __construct(TripPersistenceLayer $persistenceLayer)
+    public function __construct(TripPersistenceLayer $persistenceLayer, TripExpensesCalculator $expensesCalculator)
     {
         $this->persistenceLayer = $persistenceLayer;
+        $this->expensesCalculator = $expensesCalculator;
     }
 
     /**
@@ -43,6 +49,7 @@ class TripController
         $newTrip->setName($request->name);
         $newTrip->setStart($request->start);
         $newTrip->setEnd($request->end);
+        $newTrip->setExpenses($this->expensesCalculator->getExpenses($request->start, $request->end));
 
         $this->persistenceLayer->persist($newTrip);
 
