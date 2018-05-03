@@ -59,7 +59,12 @@ class TripController
         $newTrip->setName($request->name);
         $newTrip->setStart($request->start);
         $newTrip->setEnd($request->end);
-        $newTrip->setExpenses($this->expensesCalculator->getExpenses($request->start, $request->end));
+        $newTrip->setExpenses(
+            $this->expensesCalculator->getExpenses(
+                $request->start,
+                $request->end
+            )
+        );
 
         $this->persistenceLayer->persist($newTrip);
 

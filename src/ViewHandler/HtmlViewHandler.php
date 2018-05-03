@@ -1,17 +1,12 @@
 <?php
 
-
 namespace App\ViewHandler;
 
-
 use App\Response\Response;
+use \Symfony\Component\HttpFoundation;
 
 class HtmlViewHandler extends ViewHandler
 {
-    /**
-     * @var \JMS\Serializer\SerializerInterface
-     */
-    protected $serializer;
     /**
      * @var \Twig\Environment
      */
@@ -22,17 +17,24 @@ class HtmlViewHandler extends ViewHandler
         $this->twig = $twig;
     }
 
-    public function convertToSymfonyResponse(Response $response): \Symfony\Component\HttpFoundation\Response
+    public function convertToSymfonyResponse(
+        Response $response
+    ): HttpFoundation\Response
     {
-        $httpResponse = new \Symfony\Component\HttpFoundation\Response(
+        $httpResponse = new HttpFoundation\Response(
             $this->getHtmlForResponse($response)
         );
-        $httpResponse->headers->set('Content-Type', 'text/html');
+        $httpResponse->headers->set(
+            'Content-Type',
+            'text/html'
+        );
 
         return $httpResponse;
     }
 
-    public function getHtmlForResponse(Response $response)
+    public function getHtmlForResponse(
+        Response $response
+    )
     {
         $templateFile = $this->getTemplatePathForResponse($response);
 
@@ -43,7 +45,10 @@ class HtmlViewHandler extends ViewHandler
             );
         }
 
-        return $this->twig->render($templateFile, array('response' => $response));
+        return $this->twig->render(
+            $templateFile,
+            array('response' => $response)
+        );
     }
 
 

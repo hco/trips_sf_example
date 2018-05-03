@@ -24,7 +24,11 @@ class ResponseEventListener
      */
     private $htmlViewHandler;
 
-    public function __construct(XMLViewHandler $xmlViewHandler, JSONViewHandler $jsonViewHandler, HtmlViewHandler $htmlViewHandler)
+    public function __construct(
+        XMLViewHandler $xmlViewHandler,
+        JSONViewHandler $jsonViewHandler,
+        HtmlViewHandler $htmlViewHandler
+    )
     {
         $this->xmlViewHandler = $xmlViewHandler;
         $this->jsonViewHandler = $jsonViewHandler;
@@ -33,7 +37,9 @@ class ResponseEventListener
 
     public function getViewHandler(Request $request): ?ViewHandler
     {
-        foreach ($request->getAcceptableContentTypes() as $contentType) {
+        $contentTypes = $request->getAcceptableContentTypes();
+
+        foreach ($contentTypes as $contentType) {
             switch ($contentType) {
                 case 'text/html':
                     return $this->htmlViewHandler;
@@ -45,16 +51,26 @@ class ResponseEventListener
         }
     }
 
-    public function onKernelView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(
+        GetResponseForControllerResultEvent $event
+    )
     {
-        if (!$event->getControllerResult() instanceof Response) {
+        $controllerResult = $event->getControllerResult();
+
+        if (!$controllerResult instanceof Response) {
             return;
         }
 
-        $viewHandler = $this->getViewHandler($event->getRequest());
+        $viewHandler = $this->getViewHandler(
+            $event->getRequest()
+        );
 
         if (isset($viewHandler)) {
-            $event->setResponse($viewHandler->convertToSymfonyResponse($event->getControllerResult()));
+            $event->setResponse(
+                $viewHandler->convertToSymfonyResponse(
+                    $controllerResult
+                )
+            );
         }
 
     }
