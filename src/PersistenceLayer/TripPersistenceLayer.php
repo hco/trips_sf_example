@@ -22,7 +22,7 @@ class TripPersistenceLayer
      */
     private $repository;
 
-    public function _construct(ManagerRegistry $managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->manager = $managerRegistry->getManager();
         $this->repository = $managerRegistry->getRepository(Trip::class);
