@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class DomainRequestValueResolver implements ArgumentValueResolverInterface
+class DomainRequestJsonXmlValueResolver implements ArgumentValueResolverInterface
 {
     /**
      * @var SerializerInterface
