@@ -16,6 +16,25 @@ class Trip
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+    /**
+     * @ORM\Column(type="datetimetz_immutable")
+     */
+    private $start;
+
+    /**
+     * @ORM\Column(type="datetimetz_immutable")
+     */
+    private $end;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $expenses;
+
     public function getId(): int
     {
         return $this->id;
@@ -60,24 +79,4 @@ class Trip
     {
         $this->expenses = $expenses;
     }
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
-    /**
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $start;
-
-    /**
-     * @ORM\Column(type="datetimetz_immutable")
-     */
-    private $end;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $expenses;
-
 }
