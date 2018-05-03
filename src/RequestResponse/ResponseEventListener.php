@@ -1,6 +1,7 @@
 <?php
 namespace App\RequestResponse;
 
+use App\Response\Response;
 use App\ViewHandler\HtmlViewHandler;
 use App\ViewHandler\JSONViewHandler;
 use App\ViewHandler\ViewHandler;
@@ -46,6 +47,10 @@ class ResponseEventListener
 
     public function onKernelView(GetResponseForControllerResultEvent $event)
     {
+        if (!$event->getControllerResult() instanceof Response) {
+            return;
+        }
+
         $viewHandler = $this->getViewHandler($event->getRequest());
 
         if (isset($viewHandler)) {
