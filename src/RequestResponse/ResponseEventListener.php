@@ -1,6 +1,7 @@
 <?php
 namespace App\RequestResponse;
 
+use App\ViewHandler\HtmlViewHandler;
 use App\ViewHandler\JSONViewHandler;
 use App\ViewHandler\ViewHandler;
 use App\ViewHandler\XMLViewHandler;
@@ -17,17 +18,24 @@ class ResponseEventListener
      * @var JSONViewHandler
      */
     private $jsonViewHandler;
+    /**
+     * @var HtmlViewHandler
+     */
+    private $htmlViewHandler;
 
-    public function __construct(XMLViewHandler $xmlViewHandler, JSONViewHandler $jsonViewHandler)
+    public function __construct(XMLViewHandler $xmlViewHandler, JSONViewHandler $jsonViewHandler, HtmlViewHandler $htmlViewHandler)
     {
         $this->xmlViewHandler = $xmlViewHandler;
         $this->jsonViewHandler = $jsonViewHandler;
+        $this->htmlViewHandler = $htmlViewHandler;
     }
 
     public function getViewHandler(Request $request): ?ViewHandler
     {
         foreach ($request->getAcceptableContentTypes() as $contentType) {
             switch ($contentType) {
+                case 'text/html':
+                    return $this->htmlViewHandler;
                 case 'application/xml':
                     return $this->xmlViewHandler;
                 case 'application/json':
